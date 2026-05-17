@@ -1,0 +1,11 @@
+Predictions: [0, 1, 1, 0]
+Positive-class probabilities: [0.0, 1.0, 1.0, 0.0]
+KNN small test evaluation results
+Accuracy : 1.0000
+Precision: 1.0000
+Recall   : 1.0000
+F1-score : 1.0000
+Confusion Matrix:
+TP=2, FP=0
+FN=0, TN=2
+
