@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 
-from knn_scratch import KNearestNeighbors
-from metrics import classification_report_binary
-from preprocessing import fit_standardizer, apply_standardizer
+from src.knn_scratch import KNearestNeighbors
+from src.metrics import classification_report_binary
+from src.preprocessing import fit_standardizer, apply_standardizer
 
 
 def make_stratified_k_folds(y, n_splits=5, random_state=42):

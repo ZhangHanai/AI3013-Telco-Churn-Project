@@ -1,0 +1,20 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local editor/OS files
+.DS_Store
+.vscode/
+.idea/
+
+# Runtime-generated experiment outputs
+figures/
+results/knn_*.csv
+results/knn_*.txt
+results/model_comparison_template.csv
