@@ -64,6 +64,7 @@ class KNearestNeighbors:
             return 1
         if negative_votes > positive_votes:
             return 0
+        # Tie-breaking rule: predict churn class 1 (Churn = Yes).
         return 1
 
     def _vote_weighted(self, neighbor_labels, neighbor_distances_sq):
@@ -76,6 +77,7 @@ class KNearestNeighbors:
             return 1
         if negative_weight > positive_weight:
             return 0
+        # Tie-breaking rule: predict churn class 1 (Churn = Yes).
         return 1
 
     def predict(self, X):
@@ -116,6 +118,10 @@ class KNearestNeighbors:
         X = np.asarray(X, dtype=float)
         if X.ndim == 1:
             X = X.reshape(1, -1)
+        if X.ndim != 2:
+            raise ValueError("X must be a 2D array.")
+        if X.shape[1] != self.X_train.shape[1]:
+            raise ValueError("X must have the same number of features as the training data.")
 
         probabilities = []
         for start in range(0, X.shape[0], self.batch_size):

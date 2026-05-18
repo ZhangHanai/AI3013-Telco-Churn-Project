@@ -1,26 +1,24 @@
 from pathlib import Path
 import argparse
-import sys
 import time
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-CURRENT_FILE = Path(__file__).resolve()
-PROJECT_ROOT = CURRENT_FILE.parents[1]
-if str(CURRENT_FILE.parent) not in sys.path:
-    sys.path.append(str(CURRENT_FILE.parent))
-
-from cross_validation import cross_validate_knn
-from knn_scratch import KNearestNeighbors
-from metrics import print_classification_report
-from preprocessing import (
+from src.cross_validation import cross_validate_knn
+from src.knn_scratch import KNearestNeighbors
+from src.metrics import print_classification_report
+from src.preprocessing import (
     find_dataset_path,
     load_encoded_telco_data,
     standardize_train_test,
     stratified_train_test_split,
 )
+
+
+CURRENT_FILE = Path(__file__).resolve()
+PROJECT_ROOT = CURRENT_FILE.parents[1]
 
 
 def save_line_plot(cv_summary, metric, output_path):
