@@ -3,7 +3,7 @@ import pandas as pd
 
 from src.knn_scratch import KNearestNeighbors
 from src.metrics import classification_report_binary
-from src.preprocessing import fit_standardizer, apply_standardizer
+from src.preprocessing import standardize_selected_features
 
 
 def make_stratified_k_folds(y, n_splits=5, random_state=42):
@@ -28,7 +28,7 @@ def make_stratified_k_folds(y, n_splits=5, random_state=42):
     return fold_arrays
 
 
-def cross_validate_knn(X, y, k_values, n_splits=5, random_state=42, weighted=False):
+def cross_validate_knn(X, y, k_values, feature_names, n_splits=5, random_state=42, weighted=False):
     X = np.asarray(X, dtype=float)
     y = np.asarray(y).astype(int)
     folds = make_stratified_k_folds(y, n_splits=n_splits, random_state=random_state)
@@ -44,9 +44,9 @@ def cross_validate_knn(X, y, k_values, n_splits=5, random_state=42, weighted=Fal
             X_val_fold = X[val_indices]
             y_val_fold = y[val_indices]
 
-            mean, std = fit_standardizer(X_train_fold)
-            X_train_scaled = apply_standardizer(X_train_fold, mean, std)
-            X_val_scaled = apply_standardizer(X_val_fold, mean, std)
+            X_train_scaled, X_val_scaled, _, _, _ = standardize_selected_features(
+                X_train_fold, X_val_fold, feature_names
+            )
 
             model = KNearestNeighbors(k=k, weighted=weighted)
             model.fit(X_train_scaled, y_train_fold)
