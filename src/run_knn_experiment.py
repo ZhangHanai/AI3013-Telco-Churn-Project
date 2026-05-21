@@ -11,9 +11,7 @@ from src.knn_scratch import KNearestNeighbors
 from src.metrics import print_classification_report
 from src.preprocessing import (
     find_dataset_path,
-    load_encoded_telco_data,
-    standardize_train_test,
-    stratified_train_test_split,
+    load_preprocessed_split,
 )
 
 
@@ -64,11 +62,10 @@ def main():
     figures_dir.mkdir(exist_ok=True)
 
     dataset_path = find_dataset_path(PROJECT_ROOT)
-    X, y, feature_names, X_df = load_encoded_telco_data(dataset_path)
-
-    X_train, X_test, y_train, y_test, train_indices, test_indices = stratified_train_test_split(
-        X, y, test_size=0.2, random_state=42
-    )
+    X_train, X_test, y_train, y_test, metadata = load_preprocessed_split(dataset_path, test_size=0.2, random_state=42)
+    feature_names = metadata["feature_names"]
+    train_indices = metadata["train_indices"]
+    test_indices = metadata["test_indices"]
 
     if args.fast:
         k_values = [3, 5, 11]
@@ -79,7 +76,7 @@ def main():
 
     print("Running KNN cross-validation...")
     cv_summary, cv_detailed = cross_validate_knn(
-        X_train, y_train, k_values=k_values, n_splits=n_splits, random_state=42, weighted=args.weighted
+        X_train, y_train, k_values=k_values, feature_names=feature_names, n_splits=n_splits, random_state=42, weighted=args.weighted
     )
 
     cv_summary.to_csv(results_dir / "knn_cv_summary.csv", index=False)
@@ -92,7 +89,7 @@ def main():
     print(cv_summary.round(4).to_string(index=False))
     print(f"\nBest k selected by mean F1-score: {best_k}")
 
-    X_train_scaled, X_test_scaled, mean, std = standardize_train_test(X_train, X_test)
+    X_train_scaled, X_test_scaled = X_train, X_test
     model = KNearestNeighbors(k=best_k, weighted=args.weighted)
 
     train_start = time.perf_counter()
@@ -106,7 +103,7 @@ def main():
 
     test_report = print_classification_report(y_test, y_pred, model_name=f"KNN from scratch (k={best_k})")
 
-    memory_usage_mb = (X_train_scaled.nbytes + y_train.nbytes + mean.nbytes + std.nbytes) / (1024 ** 2)
+    memory_usage_mb = (X_train_scaled.nbytes + y_train.nbytes) / (1024 ** 2)
 
     test_metrics = {
         "model": f"KNN from scratch (k={best_k})",
@@ -154,7 +151,7 @@ Dataset path:
 {dataset_path}
 
 Encoded feature shape:
-X = {X.shape}, y = {y.shape}
+X_train = {X_train.shape}, X_test = {X_test.shape}
 
 Train-test split:
 Training samples = {len(y_train)}
