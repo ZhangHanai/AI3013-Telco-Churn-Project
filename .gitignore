@@ -18,3 +18,8 @@ figures/
 results/knn_*.csv
 results/knn_*.txt
 results/model_comparison_template.csv
+
+# Notebook/temp artifacts
+.ipynb_checkpoints/
+*.zip
+Thumbs.db

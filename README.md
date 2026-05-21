@@ -18,6 +18,13 @@ Expected split shape with the official raw dataset:
 - Train: `5625 x 45`
 - Test: `1407 x 45`
 
+
+## Repository structure policy
+- This repository is maintained as **one unified project** (no nested standalone model packages).
+- All source code lives in `src/`.
+- All SVM CSV outputs are saved in `outputs/`.
+- Any model-specific notes should be consolidated into this README or `docs/`.
+
 ## Setup
 ```bash
 pip install -r requirements.txt
