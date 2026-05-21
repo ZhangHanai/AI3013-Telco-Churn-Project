@@ -1,0 +1,2 @@
+experiment_name,learning_rate,lambda_param,n_epochs,batch_size,final_loss,train_time_sec,predict_time_sec,accuracy,precision,recall,f1,balanced_accuracy,tnr,tp,tn,fp,fn
+oversampled_train,0.001,0.01,300,128,0.5397315811012434,0.8062239999417216,0.00010040006600320339,0.7427149964463398,0.5099009900990099,0.8262032085561497,0.6306122448979592,0.7693455539392559,0.712487899322362,309,736,297,65

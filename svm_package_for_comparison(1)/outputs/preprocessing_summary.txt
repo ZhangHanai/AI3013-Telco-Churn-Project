@@ -1,0 +1,17 @@
+Telco preprocessing summary
+Raw rows: 7043
+Cleaned rows: 7032
+Dropped rows with missing TotalCharges: 11
+Feature count after encoding: 45
+Train shape: 5625 x 45
+Test shape: 1407 x 45
+Train positive ratio: 0.2658
+Test positive ratio: 0.2658
+Oversampled train distribution: {'0': 4130, '1': 4130}
+Top information gain features:
+- Contract
+- tenure
+- OnlineSecurity
+- TechSupport
+- InternetService
+Recommended model members can continue with: Logistic Regression, KNN, SVM
