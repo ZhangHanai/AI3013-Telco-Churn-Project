@@ -387,9 +387,15 @@ def run_experiment(base_dir: Path | None = None) -> None:
     if base_dir is None:
         base_dir = Path(__file__).resolve().parents[1]
 
-    data_dir = base_dir / "data"
-    out_dir = base_dir / "outputs_lr"
-    fig_dir = out_dir / "figures"
+    data_dir_candidates = [
+        base_dir / "data",
+        base_dir / "data" / "processed_reference",
+    ]
+    data_dir = next((d for d in data_dir_candidates if (d / "train_processed.csv").exists()), data_dir_candidates[-1])
+
+    out_dir = base_dir / "outputs" / "logistic_regression"
+    fig_dir = base_dir / "figures" / "logistic_regression"
+    out_dir.mkdir(parents=True, exist_ok=True)
     fig_dir.mkdir(parents=True, exist_ok=True)
 
     train_df, test_df, oversampled_df = load_processed_data(data_dir)
@@ -490,6 +496,7 @@ def run_experiment(base_dir: Path | None = None) -> None:
         import json
         json.dump(presentation_summary, f, indent=2)
 
+    print("Loaded processed data from:", data_dir)
     print("Saved LR results to:", out_dir)
     print("Selected validation threshold:", selected_threshold)
     print(results_df[["model", "threshold", "accuracy", "precision", "recall", "f1", "f2", "business_cost", "tn", "fp", "fn", "tp"]])
