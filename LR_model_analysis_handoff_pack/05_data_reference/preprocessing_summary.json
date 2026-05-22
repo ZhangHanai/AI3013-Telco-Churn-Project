@@ -1,0 +1,46 @@
+{
+  "raw_rows": 7043,
+  "cleaned_rows": 7032,
+  "dropped_missing_totalcharges": 11,
+  "feature_count_after_encoding": 45,
+  "train_shape": [
+    5625,
+    45
+  ],
+  "test_shape": [
+    1407,
+    45
+  ],
+  "train_positive_ratio": 0.2657777777777778,
+  "test_positive_ratio": 0.2658137882018479,
+  "oversampled_train_distribution": {
+    "0": 4130,
+    "1": 4130
+  },
+  "scaling_stats": {
+    "tenure": {
+      "mean": 32.59448888888889,
+      "std": 24.513890952430508
+    },
+    "MonthlyCharges": {
+      "mean": 64.93381333333333,
+      "std": 30.180640251522533
+    },
+    "TotalCharges": {
+      "mean": 2303.24184,
+      "std": 2275.690842283399
+    }
+  },
+  "top_information_gain_features": [
+    "Contract",
+    "tenure",
+    "OnlineSecurity",
+    "TechSupport",
+    "InternetService"
+  ],
+  "recommended_models": [
+    "Logistic Regression",
+    "KNN",
+    "SVM"
+  ]
+}
