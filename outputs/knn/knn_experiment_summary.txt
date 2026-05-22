@@ -1,0 +1,33 @@
+KNN experiment summary
+
+Dataset path:
+/workspace/AI3013-Telco-Churn-Project/data/WA_Fn-UseC_-Telco-Customer-Churn.csv
+
+Encoded feature shape:
+X_train = (5625, 45), X_test = (1407, 45)
+
+Train-test split:
+Training samples = 5625
+Test samples = 1407
+Features after encoding = 45
+
+Cross-validation:
+k values tested = [3, 5, 11]
+Number of folds = 3
+Best k by mean F1-score = 11
+Best CV mean F1-score = 0.5691
+
+Final test result:
+Accuracy = 0.7861
+Precision = 0.6070
+Recall = 0.5535
+F1-score = 0.5790
+TP = 207
+TN = 899
+FP = 134
+FN = 167
+
+Runtime:
+Training time = 0.000314 seconds
+Prediction time = 1.910597 seconds
+Estimated memory usage = 1.9741 MB

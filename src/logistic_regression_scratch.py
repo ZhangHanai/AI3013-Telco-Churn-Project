@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import time
 import tracemalloc
+import argparse
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -9,6 +10,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from src.cross_validation import make_stratified_k_folds
+from src.preprocessing import load_preprocessed_split
 
 @dataclass
 class EvaluationResult:
@@ -383,26 +386,25 @@ def save_top_coefficients_plot(model: LogisticRegressionScratch, feature_names: 
     plt.close()
 
 
-def run_experiment(base_dir: Path | None = None) -> None:
+def run_experiment(base_dir: Path | None = None, mode: str = "full") -> None:
     if base_dir is None:
         base_dir = Path(__file__).resolve().parents[1]
-
-    data_dir_candidates = [
-        base_dir / "data",
-        base_dir / "data" / "processed_reference",
-    ]
-    data_dir = next((d for d in data_dir_candidates if (d / "train_processed.csv").exists()), data_dir_candidates[-1])
 
     out_dir = base_dir / "outputs" / "logistic_regression"
     fig_dir = base_dir / "figures" / "logistic_regression"
     out_dir.mkdir(parents=True, exist_ok=True)
     fig_dir.mkdir(parents=True, exist_ok=True)
 
-    train_df, test_df, oversampled_df = load_processed_data(data_dir)
-
-    X_train, y_train, feature_names = split_xy(train_df)
-    X_test, y_test, _ = split_xy(test_df)
-    X_over, y_over, _ = split_xy(oversampled_df)
+    X_train, X_test, y_train, y_test, metadata = load_preprocessed_split(test_size=0.2, random_state=42)
+    feature_names = metadata["feature_names"]
+    pos_idx = np.where(y_train == 1)[0]
+    neg_idx = np.where(y_train == 0)[0]
+    rng = np.random.default_rng(42)
+    extra = rng.choice(pos_idx, size=max(0, len(neg_idx) - len(pos_idx)), replace=True)
+    over_idx = np.concatenate([np.arange(len(y_train)), extra])
+    rng.shuffle(over_idx)
+    X_over = X_train[over_idx]
+    y_over = y_train[over_idx]
 
     X_inner, X_val, y_inner, y_val = stratified_validation_split(X_train, y_train, validation_size=0.2)
 
@@ -496,7 +498,33 @@ def run_experiment(base_dir: Path | None = None) -> None:
         import json
         json.dump(presentation_summary, f, indent=2)
 
-    print("Loaded processed data from:", data_dir)
+    n_splits = 3 if mode == "demo" else 5
+    folds = make_stratified_k_folds(y_train, n_splits=n_splits, random_state=42)
+    cv_rows = []
+    all_idx = np.arange(len(y_train))
+    for fold_id, val_idx in enumerate(folds, start=1):
+        tr_idx = np.setdiff1d(all_idx, val_idx)
+        cv_model = LogisticRegressionScratch(
+            learning_rate=0.05,
+            epochs=800 if mode == "demo" else 2500,
+            l2_lambda=0.001,
+            class_weight=make_class_weight(y_train[tr_idx]),
+            random_state=42,
+        )
+        cv_model.fit(X_train[tr_idx], y_train[tr_idx])
+        cv_pred = cv_model.predict(X_train[val_idx], threshold=0.5)
+        m = calculate_metrics(y_train[val_idx], cv_pred)
+        cv_rows.append({"fold": fold_id, "accuracy": m["accuracy"], "precision": m["precision"], "recall": m["recall"], "f1": m["f1"]})
+    cv_df = pd.DataFrame(cv_rows)
+    pd.DataFrame([{
+        "n_splits": n_splits,
+        "mean_accuracy": cv_df["accuracy"].mean(),
+        "mean_precision": cv_df["precision"].mean(),
+        "mean_recall": cv_df["recall"].mean(),
+        "mean_f1": cv_df["f1"].mean(),
+    }]).to_csv(out_dir / "lr_cv_summary.csv", index=False)
+
+    print("Loaded shared preprocessing split from src.preprocessing.load_preprocessed_split")
     print("Saved LR results to:", out_dir)
     print("Selected validation threshold:", selected_threshold)
     print(results_df[["model", "threshold", "accuracy", "precision", "recall", "f1", "f2", "business_cost", "tn", "fp", "fn", "tp"]])

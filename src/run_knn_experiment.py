@@ -56,7 +56,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    results_dir = PROJECT_ROOT / "results"
+    results_dir = PROJECT_ROOT / "outputs" / "knn"
     figures_dir = PROJECT_ROOT / "figures"
     results_dir.mkdir(exist_ok=True)
     figures_dir.mkdir(exist_ok=True)
