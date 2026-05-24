@@ -28,6 +28,6 @@ FP = 134
 FN = 167
 
 Runtime:
-Training time = 0.000270 seconds
-Prediction time = 1.119069 seconds
+Training time = 0.000426 seconds
+Prediction time = 1.529119 seconds
 Estimated memory usage = 1.9741 MB

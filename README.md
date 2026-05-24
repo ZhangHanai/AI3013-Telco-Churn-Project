@@ -1,41 +1,95 @@
-# AI3013 Telco Customer Churn Project
+# AI3013 Telco Customer Churn Prediction (Final Submission)
 
-This project implements **Logistic Regression, KNN, and Linear SVM from scratch** using NumPy/Pandas/Matplotlib only (no sklearn/TensorFlow/Keras/PyTorch model implementations).
+## 1. Project Overview
+- This project predicts whether a telecom customer will churn.
+- It is a **binary classification** task.
+- Positive class definition: **Churn = Yes (1)**.
+- The project compares three **from-scratch** machine learning models under one shared preprocessing pipeline.
 
-## Preprocessing (shared by all three models)
-`src/preprocessing.py` is the canonical pipeline used by LR/KNN/SVM:
-- load `data/WA_Fn-UseC_-Telco-Customer-Churn.csv`
-- drop `customerID`
-- convert `TotalCharges` to numeric and **drop rows with missing `TotalCharges`**
-- encode target: `Churn` Yes=1, No=0
-- one-hot encode categorical features
-- stratified split (`test_size=0.2`, `random_state=42`)
-- standardize only `tenure`, `MonthlyCharges`, `TotalCharges` using train-only stats
+## 2. Repository Structure
+- `data/`  
+  Raw dataset and processed reference files.
+- `src/`  
+  Source code for preprocessing, model implementations, metrics, and experiment runners.
+- `outputs/`  
+  **Canonical final result folder** for model metrics, CV summaries, and final comparison outputs.
+- `figures/`  
+  Generated plots for analysis/demo.
+- `run_all.py`  
+  Top-level script that runs all three models and rebuilds `outputs/results_summary.csv`.
+- `requirements.txt`  
+  Python dependencies.
 
-## How to Run
+## 3. Dataset
+- Dataset: IBM Telco Customer Churn.
+- File used: `data/WA_Fn-UseC_-Telco-Customer-Churn.csv`.
+- Shared preprocessing includes:
+  - remove `customerID`
+  - convert `TotalCharges` to numeric
+  - drop rows with invalid/missing `TotalCharges`
+  - encode `Churn` as `No = 0`, `Yes = 1`
+  - encode categorical features
+  - scale numerical features using training-set statistics only
+
+## 4. Environment Setup
+```bash
+python -m pip install -r requirements.txt
+```
+
+## 5. How to Run
 ```bash
 python run_all.py --demo
 python run_all.py --full
-python -m src.run_logistic_regression
-python -m src.run_knn_experiment --fast
-python -m src.run_svm_experiments
 ```
 
-### What each command produces
-- `python run_all.py --demo`: runs LR (demo CV), KNN fast mode, SVM demo CV, then writes unified summary.
-- `python run_all.py --full`: runs full LR/KNN/SVM experiments with full CV settings, then writes unified summary. In full mode, KNN CV tests k = 1, 3, 5, 7, 9, 11 with 5 folds.
-- `python -m src.run_logistic_regression`: LR outputs in `outputs/logistic_regression/` including `lr_metrics.csv` and `lr_cv_summary.csv`.
-- `python -m src.run_knn_experiment --fast`: KNN fast outputs in `outputs/knn/`.
-- `python -m src.run_svm_experiments`: SVM outputs in `outputs/svm/` including `svm_metrics.csv` and `svm_cv_summary.csv`.
+## 6. Demo Mode
+- `python run_all.py --demo` is the faster mode for class/project demo.
+- It still runs:
+  - Logistic Regression (from scratch)
+  - K-Nearest Neighbors (from scratch)
+  - Linear SVM (from scratch)
+- It generates per-model outputs and rebuilds the unified summary file.
 
-## Canonical final outputs
-- Unified model comparison: `outputs/results_summary.csv`
-- LR: `outputs/logistic_regression/`
-- KNN: `outputs/knn/`
-- SVM: `outputs/svm/`
-- SVM final selected model may be `oversampled_train`, which means **only the training split is oversampled**; the held-out test set remains unchanged for evaluation.
+## 7. Full Experiment Mode
+- `python run_all.py --full` regenerates the full final experimental outputs.
+- This mode may take longer, especially for KNN, because prediction is distance-based.
 
-## Demo guide
-1. Run `python run_all.py --demo`.
-2. Show `outputs/results_summary.csv` for 3-model comparison.
-3. Show per-model files: `outputs/logistic_regression/lr_metrics.csv`, `outputs/knn/knn_test_metrics.csv`, `outputs/svm/svm_metrics.csv`.
+## 8. Output Files (Final)
+- `outputs/results_summary.csv`
+- `outputs/logistic_regression/lr_metrics.csv`
+- `outputs/logistic_regression/lr_cv_summary.csv`
+- `outputs/knn/knn_cv_summary.csv`
+- `outputs/knn/knn_test_metrics.csv`
+- `outputs/svm/svm_experiments.csv`
+- `outputs/svm/svm_metrics.csv`
+- `outputs/svm/svm_cv_summary.csv`
+
+## 9. Model Summary
+- **Logistic Regression (from scratch)**
+  - sigmoid probability output
+  - weighted binary cross-entropy
+  - gradient descent optimization
+  - validation-based threshold tuning
+- **KNN (from scratch)**
+  - Euclidean distance
+  - k-nearest neighbors majority voting
+  - `k` selected by cross-validation
+- **Linear SVM (from scratch)**
+  - linear decision boundary
+  - hinge loss with L2 regularization
+  - oversampled training setting for churn-oriented detection (training only)
+
+## 10. Notes for Project Code Demo
+Recommended demo flow:
+1. Show shared preprocessing in `src/preprocessing.py`.
+2. Show from-scratch model files in `src/`.
+3. Show orchestration in `run_all.py`.
+4. Show final comparison in `outputs/results_summary.csv`.
+5. Explain conclusion:
+   - Logistic Regression: highest recall
+   - KNN: highest accuracy and precision
+   - Linear SVM: highest F1-score
+   - No single model dominates all metrics; model choice depends on business objective.
+
+---
+This repository is prepared as a reproducible, from-scratch, leakage-safe, business-oriented model comparison for final submission.
