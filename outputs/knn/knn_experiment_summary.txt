@@ -12,10 +12,10 @@ Test samples = 1407
 Features after encoding = 45
 
 Cross-validation:
-k values tested = [3, 5, 11]
-Number of folds = 3
+k values tested = [1, 3, 5, 7, 9, 11]
+Number of folds = 5
 Best k by mean F1-score = 11
-Best CV mean F1-score = 0.5691
+Best CV mean F1-score = 0.5625
 
 Final test result:
 Accuracy = 0.7861
@@ -28,6 +28,6 @@ FP = 134
 FN = 167
 
 Runtime:
-Training time = 0.000314 seconds
-Prediction time = 1.910597 seconds
+Training time = 0.000270 seconds
+Prediction time = 1.119069 seconds
 Estimated memory usage = 1.9741 MB

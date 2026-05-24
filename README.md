@@ -23,7 +23,7 @@ python -m src.run_svm_experiments
 
 ### What each command produces
 - `python run_all.py --demo`: runs LR (demo CV), KNN fast mode, SVM demo CV, then writes unified summary.
-- `python run_all.py --full`: runs full LR/KNN/SVM experiments with full CV settings, then writes unified summary.
+- `python run_all.py --full`: runs full LR/KNN/SVM experiments with full CV settings, then writes unified summary. In full mode, KNN CV tests k = 1, 3, 5, 7, 9, 11 with 5 folds.
 - `python -m src.run_logistic_regression`: LR outputs in `outputs/logistic_regression/` including `lr_metrics.csv` and `lr_cv_summary.csv`.
 - `python -m src.run_knn_experiment --fast`: KNN fast outputs in `outputs/knn/`.
 - `python -m src.run_svm_experiments`: SVM outputs in `outputs/svm/` including `svm_metrics.csv` and `svm_cv_summary.csv`.
@@ -33,6 +33,7 @@ python -m src.run_svm_experiments
 - LR: `outputs/logistic_regression/`
 - KNN: `outputs/knn/`
 - SVM: `outputs/svm/`
+- SVM final selected model may be `oversampled_train`, which means **only the training split is oversampled**; the held-out test set remains unchanged for evaluation.
 
 ## Demo guide
 1. Run `python run_all.py --demo`.

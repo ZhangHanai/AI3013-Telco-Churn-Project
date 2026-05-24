@@ -16,8 +16,8 @@
     "fp": 463,
     "fn": 33,
     "tp": 341,
-    "training_time_sec": 2.2276553069996226,
-    "prediction_time_sec": 0.0002107090003846679,
+    "training_time_sec": 1.3946077970000061,
+    "prediction_time_sec": 0.00011783099999718161,
     "peak_memory_mb": 0.47615814208984375
   }
 }
