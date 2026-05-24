@@ -181,7 +181,7 @@ Estimated memory usage = {memory_usage_mb:.4f} MB
 """
     (results_dir / "knn_experiment_summary.txt").write_text(summary_text, encoding="utf-8")
 
-    print("\nSaved files under results/ and figures/.")
+    print("\nSaved files under outputs/knn and figures/.")
 
 
 if __name__ == "__main__":
