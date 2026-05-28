@@ -78,7 +78,9 @@ python run_all.py --full
 - **Linear SVM (from scratch)**
   - linear decision boundary
   - hinge loss with L2 regularization
-  - oversampled training setting for churn-oriented detection (training only)
+  - uses the teammate-confirmed processed split for final reproduction
+  - oversampling is applied only to the SVM training set
+  - the test set must never be oversampled
 
 ## 10. Notes for Project Code Demo
 Recommended demo flow:
