@@ -14,10 +14,11 @@ The novelty is a churn-oriented adaptation:
 
 1. Logistic Regression implemented from scratch using NumPy.
 2. Class-weighted binary cross-entropy to address class imbalance.
-3. Validation-based threshold tuning.
-4. F2-score and business cost used to choose a threshold that reduces missed churn customers.
+3. Validation-based threshold analysis.
+4. Final report threshold fixed at **0.36** to match the validated LR handoff experiment and final report.
+5. F2-score and business cost used to explain why a lower churn-oriented threshold reduces missed churn customers.
 
-The threshold is selected on the validation set only. The test set is used only for final evaluation.
+The final threshold is 0.36. The test set is used only for final evaluation.
 
 ## Required data files
 
@@ -47,7 +48,7 @@ logistic_regression_churn_from_scratch_novelty_v2.ipynb
 
 ## Outputs
 
-After running, results will be saved to `outputs_lr/`.
+After running through this repository, results are saved to `outputs/logistic_regression/`.
 
 Main CSV files:
 
@@ -67,8 +68,10 @@ Main figures:
 
 ## Important explanation for report and presentation
 
-The chosen threshold is not manually selected. It is selected on the validation set using F2-score as the primary metric.  
-F2-score is used because it gives more weight to recall, which is important in churn prediction because missing a real churn customer is costly.
+The final threshold used for the report is **0.36**. In this repository it is fixed in code so rerunning `python run_all.py --full` remains consistent with the validated LR handoff experiment and final report.  
+F2-score is discussed because it gives more weight to recall, which is important in churn prediction because missing a real churn customer is costly.
+
+Final LR report metrics: Accuracy = 0.673774, Precision = 0.443258, Recall = 0.887701, F1 = 0.591273, F2 = 0.739421, TN = 616, FP = 417, FN = 42, TP = 332.
 
 Business cost is defined as:
 

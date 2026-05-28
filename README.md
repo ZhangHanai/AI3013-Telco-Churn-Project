@@ -69,7 +69,8 @@ python run_all.py --full
   - sigmoid probability output
   - weighted binary cross-entropy
   - gradient descent optimization
-  - validation-based threshold tuning
+  - final threshold fixed at **0.36** to match the validated LR handoff experiment and final report
+  - final report metrics: Accuracy = 0.673774, Precision = 0.443258, Recall = 0.887701, F1 = 0.591273, F2 = 0.739421, TN = 616, FP = 417, FN = 42, TP = 332
 - **KNN (from scratch)**
   - Euclidean distance
   - k-nearest neighbors majority voting
@@ -84,9 +85,9 @@ Recommended demo flow:
 1. Show shared preprocessing in `src/preprocessing.py`.
 2. Show from-scratch model files in `src/`.
 3. Show orchestration in `run_all.py`.
-4. Show final comparison in `outputs/results_summary.csv`.
+4. Show final comparison in `outputs/results_summary.csv`; the Logistic Regression row should show `threshold=0.36`, Recall ≈ 0.8877, F1 ≈ 0.5913, FN = 42, TP = 332.
 5. Explain conclusion:
-   - Logistic Regression: highest recall
+   - Logistic Regression: churn-oriented threshold-tuned model aligned with the final report
    - KNN: highest accuracy and precision
    - Linear SVM: highest F1-score
    - No single model dominates all metrics; model choice depends on business objective.
