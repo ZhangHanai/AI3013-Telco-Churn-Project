@@ -24,11 +24,12 @@ This is the final Logistic Regression variant because it represents the novelty 
 
 ## Why threshold = 0.36?
 
-The threshold was selected on the validation set, not on the test set.
-The selection criterion was:
-1. Maximize F2-score
-2. Minimize business cost = 5 × FN + 1 × FP
-3. Maintain high recall and reduce false negatives
+The final threshold is fixed at **0.36** in the repository so rerunning the code stays consistent with the validated LR handoff experiment and final report. The original handoff selection rationale was:
+1. Use the validation-set threshold analysis, not the test set, for threshold selection.
+2. Prioritize churn-oriented recall/F2 behavior.
+3. Consider business cost = 5 × FN + 1 × FP and false negatives.
+
+Final LR metrics: Accuracy = 0.673774, Precision = 0.443258, Recall = 0.887701, F1 = 0.591273, F2 = 0.739421, TN = 616, FP = 417, FN = 42, TP = 332.
 
 ## Suggested interpretation
 

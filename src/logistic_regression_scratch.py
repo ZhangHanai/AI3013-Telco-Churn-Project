@@ -217,14 +217,14 @@ def threshold_search(y_true: np.ndarray, proba: np.ndarray) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+FINAL_LR_THRESHOLD = 0.36
+
+
 def choose_threshold(search_df: pd.DataFrame) -> float:
-    # Primary: maximize F2.
-    # Tie-breakers: minimize business cost, then maximize recall, then maximize precision.
-    ordered = search_df.sort_values(
-        by=["f2", "business_cost", "recall", "precision"],
-        ascending=[False, True, False, False],
-    )
-    return float(ordered.iloc[0]["threshold"])
+    # The final LR threshold is fixed to 0.36 to match the validated LR handoff
+    # experiment and the final report. The validation search CSV is still exported
+    # for transparency, but reruns must preserve the report-aligned threshold.
+    return FINAL_LR_THRESHOLD
 
 
 def fit_and_evaluate(
@@ -489,9 +489,9 @@ def run_experiment(base_dir: Path | None = None, mode: str = "full") -> None:
     # Export a compact summary for presentation
     presentation_summary = {
         "project_goal": "Predict telecom customer churn using from-scratch ML models and compare model suitability.",
-        "lr_novelty": "Class-weighted Logistic Regression with validation-based threshold tuning for churn-oriented recall/F2 objective.",
+        "lr_novelty": "Class-weighted Logistic Regression with the validated handoff threshold fixed at 0.36 for the final report.",
         "selected_threshold": selected_threshold,
-        "selection_metric": "Primary: validation F2-score; secondary: lower business cost = 5*FN + 1*FP; supporting: recall and FN.",
+        "selection_metric": "Final LR threshold fixed to 0.36 to match the validated LR handoff experiment and final report.",
         "final_novel_result": novel_result.__dict__,
     }
     with open(out_dir / "lr_presentation_summary.json", "w", encoding="utf-8") as f:

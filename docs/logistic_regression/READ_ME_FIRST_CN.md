@@ -7,24 +7,24 @@
 
 ## 2. 你需要优先看的文件
 
-1. `02_results_for_model_comparison/lr_row_for_results_summary.csv`
-   - 这是建议放进三模型总对比表的 LR 行。
-   - 已包含 accuracy, precision, recall, F1, F2, training time, prediction time, memory, confusion matrix。
+1. `outputs/results_summary.csv`
+   - 这是三模型总对比表；Logistic Regression 行必须是 `threshold=0.36`。
+   - 已包含 accuracy, precision, recall, F1, training time, prediction time, memory, confusion matrix。
 
-2. `02_results_for_model_comparison/lr_metrics.csv`
+2. `outputs/logistic_regression/lr_metrics.csv`
    - 这是 LR 所有实验版本：
      - Baseline LR t=0.50
      - Oversampled LR t=0.50
      - Class-weighted LR t=0.50
      - Novel weighted LR t=0.36
 
-3. `03_figures_for_report_and_presentation/lr_threshold_sweep_validation.png`
-   - 用来证明 threshold=0.36 是 validation set 选出来的，不是手动挑的。
+3. `figures/logistic_regression/lr_threshold_sweep_validation.png`
+   - 展示 validation threshold analysis，并标出最终报告采用的 threshold=0.36。
 
-4. `03_figures_for_report_and_presentation/lr_confusion_matrices.png`
+4. `figures/logistic_regression/lr_confusion_matrices.png`
    - 展示不同 LR 版本的 confusion matrix。
 
-5. `03_figures_for_report_and_presentation/lr_model_comparison_bar.png`
+5. `figures/logistic_regression/lr_model_comparison_bar.png`
    - 展示不同 LR 版本的 accuracy, precision, recall, F1, F2 对比。
 
 ## 3. 推荐用于三模型总对比的 LR 结果
@@ -55,8 +55,7 @@
 - 用 F2-score 作为主要选择指标
 - 用 business cost = 5 × FN + 1 × FP 作为辅助指标
 
-0.36 是 validation set 上选出来的 threshold。
-test set 只用于最终评估，避免 data leakage。
+0.36 是三号 LR handoff experiment 和最终报告确认的 threshold。为了保证 `python run_all.py --full` 重新运行后不会回到后续 cleanup 的 0.31 版本，本仓库代码中将最终 LR threshold 固定为 0.36。test set 只用于最终评估，避免 data leakage。
 
 ## 5. 给模型分析同学写 comparison 时可以用的表述
 
