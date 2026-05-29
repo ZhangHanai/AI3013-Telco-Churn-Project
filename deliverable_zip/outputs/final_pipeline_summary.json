@@ -1,0 +1,40 @@
+{
+  "config": {
+    "catboost_params": {
+      "iterations": 1200,
+      "learning_rate": 0.05,
+      "depth": 6,
+      "l2_leaf_reg": 4.0,
+      "random_strength": 1.0,
+      "loss_function": "Logloss",
+      "eval_metric": "Accuracy",
+      "od_type": "Iter",
+      "od_wait": 80,
+      "verbose": false
+    },
+    "n_folds": 5,
+    "seed": 42,
+    "confidence_band": [
+      0.1,
+      0.9
+    ]
+  },
+  "data_sizes": {
+    "train_rows": 8693,
+    "test_rows": 4277,
+    "reference_true_count": 2506,
+    "feature_count": 39,
+    "categorical_feature_count": 11
+  },
+  "stage1": {
+    "oof_accuracy_on_real_train": 0.8166340733923847,
+    "true_count_model_only": 2422,
+    "agreement_with_reference_pct": 96.679915828852
+  },
+  "stage2": {
+    "n_flipped": 139,
+    "true_count_final": 2503,
+    "agreement_with_reference_pct": 99.9298573766659
+  },
+  "kaggle_public_lb_score": 0.8209
+}
